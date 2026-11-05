@@ -4,7 +4,7 @@ metadado `service_id` e reranking opcional por cross-encoder.
 Todo resultado traz os sinais brutos (`bm25`, `dense`, `rrf`, `rerank`) — o gate de evidência e a
 avaliação de componentes usam esses números independentemente do modo escolhido.
 
-Demo: python -m citizen_rag.retriever "como peço o seguro-desemprego?" [--mode bm25|dense|hybrid|all]
+Demo: python -m citizen_rag.retriever "como peço o garantia safra?" [--mode bm25|dense|hybrid|all]
 """
 from __future__ import annotations
 
@@ -150,13 +150,13 @@ def make_retriever(cfg: dict | None = None, corpus_path=None) -> Retriever:
 
 
 SAMPLE_QUESTIONS = [
-    "Fui demitido sem justa causa, como peço o seguro-desemprego?",
-    "Quais documentos preciso levar para tirar o passaporte?",
-    "Quanto custa emitir o passaporte?",
+    "A chuva não veio e perdi o milho, como peço o Garantia-Safra?",
+    "Quais documentos preciso levar para fazer o CAF?",
+    "Quanto custa a adesão ao Garantia-Safra?",
     "Qual é a renda máxima para entrar no CadÚnico?",
-    "Qual o prazo para pedir o seguro depois da demissão?",
+    "Tem que ter CAF ativo para pegar crédito do Pronaf?",
     "Onde faço a entrevista do Cadastro Único?",
-    "Como me formalizo como MEI?",
+    "Com quantos anos a mulher da roça se aposenta?",
     "Quem tem direito ao BPC?",
     "Como renovo minha CNH?",                       # fora de escopo
     "Qual a previsão do tempo para amanhã?",        # fora de escopo

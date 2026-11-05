@@ -1,0 +1,6 @@
+{"categoria": "adversarial", "n_validas": 4, "respondidas": 0, "abstidas": 4, "bloqueadas": 2, "acerto_automatico": 0.5, "nao_sustentadas": 0, "taxa_nao_sustentadas_entre_respostas": null}
+{"categoria": "ambigua", "n_validas": 4, "respondidas": 4, "abstidas": 0, "bloqueadas": 0, "acerto_automatico": 0.0, "nao_sustentadas": 1, "taxa_nao_sustentadas_entre_respostas": 0.25}
+{"categoria": "fora_escopo", "n_validas": 4, "respondidas": 0, "abstidas": 4, "bloqueadas": 0, "acerto_automatico": 1.0, "nao_sustentadas": 0, "taxa_nao_sustentadas_entre_respostas": null}
+{"categoria": "multi_turno", "n_validas": 4, "respondidas": 4, "abstidas": 0, "bloqueadas": 0, "acerto_automatico": 0.75, "nao_sustentadas": 0, "taxa_nao_sustentadas_entre_respostas": 0.0}
+{"categoria": "respondivel", "n_validas": 18, "respondidas": 18, "abstidas": 0, "bloqueadas": 0, "acerto_automatico": 0.3888888888888889, "nao_sustentadas": 1, "taxa_nao_sustentadas_entre_respostas": 0.05555555555555555}
+{"categoria": "sem_resposta", "n_validas": 6, "respondidas": 1, "abstidas": 5, "bloqueadas": 0, "acerto_automatico": 0.8333333333333334, "nao_sustentadas": 0, "taxa_nao_sustentadas_entre_respostas": 0.0}

@@ -1,0 +1,5 @@
+﻿prompt,categoria,n_validas,cobertura_fatos,tem_citacao_valida,precisao_citacoes,abstencao_correta,suporte_lexical,julgamento_automatico,juiz_fundamentada
+v1,respondivel,18,0.5925925925925926,1.0,1.0,,0.774,0.3333333333333333,1.0
+v1,sem_resposta,6,,1.0,1.0,0.0,0.602,0.0,0.8333333333333334
+v2,respondivel,18,0.712962962962963,1.0,1.0,,0.6888333333333333,0.4444444444444444,1.0
+v2,sem_resposta,6,,0.16666666666666666,1.0,0.8333333333333334,0.4135,0.8333333333333334,0.16666666666666666

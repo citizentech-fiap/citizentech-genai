@@ -3,7 +3,7 @@
 Uso principal (contrato com o robô):
     from citizen_rag.rag import RAGAssistant
     rag = RAGAssistant()               # corpus padrão: ../RPA/output/corpus/servicos.jsonl
-    out = rag.answer("Como peço o seguro-desemprego?")
+    out = rag.answer("Como peço o Garantia-Safra?")
 """
 
 __version__ = "0.1.0"

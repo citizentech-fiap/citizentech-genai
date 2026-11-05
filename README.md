@@ -1,8 +1,19 @@
 # CitizenTech — Assistente RAG (genAI)
 
-Assistente que responde a cidadãos sobre serviços públicos federais (requisitos, documentos, etapas,
-canais, prazos) com base nas Cartas de Serviço do gov.br coletadas pelo robô de RPA.
-O relatório completo (avaliação e justificativas) vem depois; este arquivo cobre só o uso.
+Assistente que responde a agricultores familiares do semiárido sobre serviços públicos (Garantia-Safra, CAF,
+Pronaf, aposentadoria e salário-maternidade rurais, Cadastro Único, Bolsa Família, BPC, CPF): requisitos,
+documentos, etapas, canais e prazos, com base nas Cartas de Serviço do gov.br coletadas pelo robô de RPA,
+sempre citando a fonte e se abstendo quando a informação não está nas cartas.
+
+**Relatório de avaliação** (decisões de chunking, retriever e generator, métricas por componente e ponta a
+ponta, segurança e interpretação): [`report/relatorio_avaliacao.md`](report/relatorio_avaliacao.md).
+
+| Resultado (40 perguntas, 05/11/2026) | |
+|---|---|
+| Serviço certo nos 5 trechos recuperados | 95,3% |
+| Abstenção correta sem a informação no contexto (prompt v2) | 5 de 6 |
+| Respostas corretas nas perguntas respondíveis (revisão humana) | 68,2% — erros todos de geração |
+| Vazamentos com as proteções ligadas | 0 em 12 cenários de ataque |
 
 Global Solution 2026.2 · FIAP · Generative AI & Advanced Nets · Turma 2TIAPF
 
@@ -50,7 +61,7 @@ O índice também é construído sob demanda na primeira chamada.
 from citizen_rag.rag import RAGAssistant    # após pip install -e .
 
 rag = RAGAssistant()                       # ou RAGAssistant(corpus_path=..., overrides={...}, llm=...)
-out = rag.answer("Fui demitido, como peço o seguro-desemprego?",
+out = rag.answer("A chuva não veio e perdi o milho, como peço o Garantia-Safra?",
                  history=[{"role": "user", "content": "..."}], service_id=None)
 # out: answer, citations[{n, service_id, titulo, url, secao}], abstained, reason, chunks, blocked
 rag.last_trace                             # diagnóstico da última chamada (sinais, gate, LLM, citações)
@@ -58,8 +69,8 @@ rag.last_trace                             # diagnóstico da última chamada (si
 Demonstrações:
 ```powershell
 ..\.venv\Scripts\python -m citizen_rag.retriever                     # compara bm25/dense/hybrid
-..\.venv\Scripts\python -m citizen_rag.retriever --mode hybrid --rerank "quanto custa o passaporte?"
-..\.venv\Scripts\python -m citizen_rag.rag "Quais documentos para o passaporte?"
+..\.venv\Scripts\python -m citizen_rag.retriever --mode hybrid --rerank "quanto custa a adesão ao garantia safra?"
+..\.venv\Scripts\python -m citizen_rag.rag "Quais documentos para o Garantia-Safra?"
 ```
 
 ## Componentes (`citizen_rag/`)

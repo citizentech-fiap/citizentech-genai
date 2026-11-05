@@ -1,0 +1,4 @@
+﻿configuracao,sinal,limiar,n_respondivel,respondiveis_bloqueadas,n_fora_escopo,fora_escopo_passariam,n_sem_resposta,sem_resposta_passariam,erro_balanceado
+fixed_s250_o50_hybrid,dense,0.85,18,0,4,0,6,5,0.0
+fixed_s250_o50_hybrid_rerank,dense,0.8399651646614075,18,0,4,0,6,6,0.0
+fixed_s250_o50_hybrid_rerank,rerank,-4.32698655128479,18,0,4,0,6,5,0.0

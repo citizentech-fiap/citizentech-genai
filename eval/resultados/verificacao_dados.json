@@ -1,0 +1,25 @@
+{
+    "metodo":  "PowerShell: leitura JSON e comparação literal/case-sensitive de cada fato nas seções anotadas; comparação dos nove registros do fixture por valor JSON",
+    "perguntas":  40,
+    "fatos_literais_verificados":  40,
+    "erros_fatos":  0,
+    "categorias":  {
+                       "respondivel":  18,
+                       "sem_resposta":  6,
+                       "ambigua":  4,
+                       "fora_escopo":  4,
+                       "multi_turno":  4,
+                       "adversarial":  4
+                   },
+    "servicos":  9,
+    "servicos_cobertos":  9,
+    "registros_alterados_fixture":  [
+                                        "garantia_safra"
+                                    ],
+    "corpus_sha256":  "c6326a60d5a44b26399128d7442a42bdb7d31c87b8b50fefb5e5a4d0a8b38300",
+    "perguntas_sha256":  "dee4cd7e4af4b523355a4d6239aa483835a9d45a9bd3665399278580b3180ad9",
+    "fixture_sha256":  "3bf6c679d62ef8b4de0e950116a2514ca6fe589c052263a27f4a7130b7137b87",
+    "python_executado":  false,
+    "testes_executados":  0,
+    "data_registro_utc":  "2026-11-05T18:27:22.1090331Z"
+}

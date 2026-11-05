@@ -1,0 +1,3 @@
+# Agregados
+
+Consulte geracao.md.

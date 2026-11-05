@@ -120,8 +120,15 @@ class GeminiLLM(BaseLLM):
             pass
         return None
 
+    # Espera máxima que vale a pena num retry. Acima disso (ex.: cota diária, retryDelay de horas) não adianta
+    # esperar: o modelo é marcado como esgotado até a hora indicada e a chamada vai direto para o fallback.
+    MAX_RETRY_WAIT_S = 120
+    _esgotado_ate: dict[str, float] = {}
+
     def _call(self, model: str, system: str, user: str, params: dict) -> LLMResponse:
         from google.genai import errors
+        if GeminiLLM._esgotado_ate.get(model, 0) > time.time():
+            return LLMResponse("", False, model, "cota_esgotada")
         last = "erro_api"
         for attempt in range(self.max_retries + 1):
             t0 = time.time()
@@ -154,6 +161,11 @@ class GeminiLLM(BaseLLM):
                     log.error("Gemini erro %s: %s", code, str(e)[:200])
                     return LLMResponse("", False, model, f"erro_api_{code}")
                 delay = self._retry_delay(e) if code == 429 else None
+                if delay and delay > self.MAX_RETRY_WAIT_S:
+                    GeminiLLM._esgotado_ate[model] = time.time() + delay
+                    log.warning("Gemini %s: cota esgotada (nova tentativa só em %.0f min); sem retry",
+                                model, delay / 60)
+                    return LLMResponse("", False, model, "cota_esgotada")
             except Exception as e:  # timeout (httpx), rede, etc.
                 name = type(e).__name__.lower()
                 last = "timeout" if "timeout" in name or "timed out" in str(e).lower() else "erro_rede"
@@ -167,7 +179,8 @@ class GeminiLLM(BaseLLM):
 
     def complete(self, system: str, user: str, **params) -> LLMResponse:
         r = self._call(self.model, system, user, params)
-        if not r.ok and self.fallback_model and r.error in ("rate_limit", "erro_servidor", "timeout", "erro_api_404"):
+        if not r.ok and self.fallback_model and r.error in ("rate_limit", "cota_esgotada", "erro_servidor",
+                                                             "timeout", "erro_api_404"):
             log.warning("Usando modelo de fallback %s após %s", self.fallback_model, r.error)
             r = self._call(self.fallback_model, system, user, params)
         return r

@@ -201,7 +201,7 @@ class RAGAssistant:
         if support < float(gcfg.get("min_lexical_support", 0.0)):
             return self._finish(self._result(G.ABSTENTION_TEXT, True, "baixo_suporte", out_chunks), trace, t0)
         if gcfg.get("groundedness_check", False):
-            grounded, info = G.judge_groundedness(self.llm, text, [c.text for c in chunks])
+            grounded, info = G.judge_groundedness(self.llm, text, G.judge_evidence(chunks))
             trace["groundedness"] = {"grounded": grounded, **info}
             if grounded is False:
                 return self._finish(self._result(G.ABSTENTION_TEXT, True, "nao_fundamentado", out_chunks), trace, t0)

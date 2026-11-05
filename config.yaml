@@ -63,8 +63,11 @@ gate:
 # ---------------------------------------------------------------- gerador (LLM)
 llm:
   provider: gemini          # gemini | none (força modo sem LLM)
-  model: gemini-3.6-flash   # estável e com free tier (verificado em aistudio.google.com/docs/models, nov/2026)
-  fallback_model: gemini-3.5-flash-lite   # usado após esgotar retries por 429/erro no modelo principal
+  # flash-lite como principal: a cota diária gratuita do 3.6-flash esgotou com ~40 chamadas na avaliação
+  # (05/11/2026), o que não sustenta nem os testes; a tarefa (responder a partir de trechos curtos, citando)
+  # cabe num modelo menor, com menor latência. Ver report/relatorio_avaliacao.md.
+  model: gemini-3.5-flash-lite
+  fallback_model: gemini-3.6-flash   # usado após 429/erro no principal; cota diária esgotada -> sem retry
   temperature: 0.1          # baixa: respostas factuais. Obs.: a doc indica que Gemini 3.6+ ignora temperature
   top_p: 0.9
   max_output_tokens: 700
