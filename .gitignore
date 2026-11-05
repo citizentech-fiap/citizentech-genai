@@ -1,0 +1,12 @@
+.env
+indexes/
+.cache/
+logs/
+tests/.indexes/
+tests/.logs/
+__pycache__/
+
+# ferramentas locais
+.claude/
+.pytest_cache/
+*.pyc

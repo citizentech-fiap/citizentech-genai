@@ -1,0 +1,8 @@
+pyyaml
+python-dotenv
+numpy
+rank-bm25
+sentence-transformers
+chromadb
+google-genai
+pandas

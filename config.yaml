@@ -1,0 +1,90 @@
+# Configuração do assistente RAG CitizenTech (pacote citizen_rag).
+# Caminhos relativos à pasta genAI/. Qualquer chave pode ser sobrescrita em código
+# via RAGAssistant(overrides={...}) — usado pelos scripts de avaliação para comparar configurações.
+
+paths:
+  corpus: ../RPA/output/corpus/servicos.jsonl     # gerado pelo robô (coletor gov.br)
+  corpus_fixture: tests/fixtures/corpus_fixture.jsonl   # usado se o corpus real não existir
+  index_dir: indexes          # um subdiretório por (corpus, chunking, embedding) -> comparações não colidem
+  llm_cache_dir: .cache/llm   # cache em disco das respostas do LLM (economiza cota do free tier)
+  log_file: logs/rag.log
+
+# ---------------------------------------------------------------- chunking
+chunking:
+  strategy: hybrid        # structural | fixed | hybrid
+  unit: words             # tamanho medido em palavras (aprox. 1 palavra ~ 1,3 token em PT-BR)
+  size: 160               # tamanho máximo do chunk (palavras)
+  overlap: 40             # sobreposição entre janelas consecutivas (palavras) — fixed/hybrid
+  min_size: 8             # fragmentos de corte menores que isso são descartados (seção curta é sempre mantida)
+  prefix_title: true      # prefixa "Título do serviço — Seção" no texto do chunk (ajuda BM25 e embeddings)
+
+# ---------------------------------------------------------------- embeddings / índice denso
+embedding:
+  backend: sentence_transformers    # sentence_transformers | hashing (fallback offline, sem download)
+  model: intfloat/multilingual-e5-small
+  query_prefix: "query: "           # modelos e5 exigem prefixos assimétricos
+  passage_prefix: "passage: "
+  batch_size: 32
+  device: cpu
+
+vector_store: numpy       # numpy (np.save, busca exata por produto interno) | chroma (opcional)
+
+bm25:
+  k1: 1.5
+  b: 0.75
+  stemming: light         # light (remove plural simples) | none
+  remove_stopwords: true
+
+# ---------------------------------------------------------------- retriever
+retriever:
+  mode: hybrid            # bm25 | dense | hybrid (RRF)
+  top_k: 5                # chunks entregues ao gerador
+  candidate_k: 20         # candidatos de cada retriever antes da fusão/rerank
+  rrf_k: 60               # constante do Reciprocal Rank Fusion
+  weights: {bm25: 1.0, dense: 1.0}
+  fallback_unfiltered: true   # se o filtro por service_id não achar nada, busca sem filtro
+  reranker:
+    enabled: false        # cross-encoder é pesado em CPU; ligar para comparação
+    model: cross-encoder/mmarco-mMiniLMv2-L12-H384-v1   # multilíngue (treinado no mMARCO)
+    top_n: 20             # quantos candidatos reranquear
+
+# Gate de evidência: se o melhor chunk recuperado não atingir o limiar, abstém SEM chamar o LLM.
+# policy: best_signal (usa o sinal mais calibrado disponível: rerank > denso > BM25) | any | all.
+# BM25 bruto não é bom gate: depende do tamanho do corpus e casa termos genéricos ("tempo", "CNH" em
+# listas de documentos). Calibração (e5-small, corpus real 10 serviços): fora de escopo 0.83-0.84,
+# dentro 0.855-0.903 -> 0.85 (margem estreita; o reranker dá margem maior). Limiares dependem do embedding: recalibrar na avaliação.
+gate:
+  enabled: true
+  policy: best_signal
+  min_dense_score: 0.85     # cosseno e5 (faixa comprimida típica do e5)
+  min_bm25_score: 8.0       # só decide quando não há índice denso (BM25 puro)
+  min_rerank_score: -1.5    # logit do cross-encoder mMARCO (dentro >= -1.1, fora <= -1.8); só com reranker ligado
+
+# ---------------------------------------------------------------- gerador (LLM)
+llm:
+  provider: gemini          # gemini | none (força modo sem LLM)
+  model: gemini-3.6-flash   # estável e com free tier (verificado em aistudio.google.com/docs/models, nov/2026)
+  fallback_model: gemini-3.5-flash-lite   # usado após esgotar retries por 429/erro no modelo principal
+  temperature: 0.1          # baixa: respostas factuais. Obs.: a doc indica que Gemini 3.6+ ignora temperature
+  top_p: 0.9
+  max_output_tokens: 700
+  thinking_level: low       # menos latência/cota; null = padrão do modelo
+  timeout_s: 30
+  max_retries: 3
+  backoff_s: 2              # espera exponencial 2, 4, 8 s (respeita retryDelay do 429 quando informado)
+  cache: true
+
+generator:
+  prompt_version: v2        # v1 (mínimo) | v2 (completo: papel, regras, abstenção, formato)
+  max_history_turns: 3
+
+# ---------------------------------------------------------------- guardrails
+guardrails:
+  max_question_chars: 1500
+  block_injection: true            # bloqueia pergunta com padrão de injeção/jailbreak
+  sanitize_chunks: true            # neutraliza instruções embutidas nos documentos (injeção indireta)
+  mask_pii: true                   # mascara CPF/e-mail/telefone/RG na pergunta, histórico e resposta
+  citation_policy: reject          # reject (abstém se houver citação inválida) | strip (remove só as inválidas)
+  require_citation: true           # resposta factual sem citação válida -> abstém
+  min_lexical_support: 0.0         # 0 = só registra; >0 = abstém se o suporte lexical for menor
+  groundedness_check: false        # 2ª chamada ao LLM (juiz) — desligado por padrão para poupar cota
