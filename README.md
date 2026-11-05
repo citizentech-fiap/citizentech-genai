@@ -1,14 +1,25 @@
 # CitizenTech — Assistente RAG (genAI)
 
 Assistente que responde a cidadãos sobre serviços públicos federais (requisitos, documentos, etapas,
-canais, prazos) com base nas Cartas de Serviço do gov.br coletadas pelo robô (`../RPA`).
+canais, prazos) com base nas Cartas de Serviço do gov.br coletadas pelo robô de RPA.
 O relatório completo (avaliação e justificativas) vem depois; este arquivo cobre só o uso.
+
+## Parte da solução CitizenTech
+| Repositório | Disciplina | Papel |
+|---|---|---|
+| `citizentech-rpa` | AI for RPA | robô que coleta as Cartas de Serviço e faz a pré-triagem dos pedidos |
+| **`citizentech-genai`** (este) | Generative AI | assistente RAG, importado pelo robô e pelo dashboard |
+| `citizentech-dashboard` | Front-end | painel de decisão do gestor |
+
+Este repositório roda sozinho: o corpus está em `data/corpus/servicos.jsonl` (fontes e datas de consulta em
+[`data/corpus/FONTES.md`](data/corpus/FONTES.md)). Para trazer a coleta mais recente do robô:
+`python -m citizen_rag.sync_corpus`.
 
 ## Setup
 ```powershell
-# na pasta GS/
-.venv\Scripts\python -m pip install -r genAI\requirements.txt
-# opcional: chave do Gemini (free tier) em genAI\.env ou RPA\.env
+python -m venv .venv
+.venv\Scripts\python -m pip install -e .          # instala o pacote citizen_rag e as dependências
+# opcional: chave do Gemini (free tier) em .env
 #   GEMINI_API_KEY=...
 ```
 Sem chave, o assistente funciona em modo degradado: recupera os trechos e devolve
@@ -21,14 +32,13 @@ cd genAI
 ..\.venv\Scripts\python -m citizen_rag.indexing --grid         # todas as configurações de comparação
 ..\.venv\Scripts\python -m citizen_rag.indexing --corpus tests\fixtures\corpus_fixture.jsonl
 ```
-Corpus padrão: `../RPA/output/corpus/servicos.jsonl` (se não existir, usa o fixture de testes).
+Corpus padrão: `data/corpus/servicos.jsonl` (se não existir, usa o fixture de testes).
 Cada configuração (corpus + chunking + embedding) ganha seu diretório em `indexes/`.
 O índice também é construído sob demanda na primeira chamada.
 
 ## Uso
 ```python
-import sys; sys.path.insert(0, r"..\genAI")
-from citizen_rag.rag import RAGAssistant
+from citizen_rag.rag import RAGAssistant    # após pip install -e .
 
 rag = RAGAssistant()                       # ou RAGAssistant(corpus_path=..., overrides={...}, llm=...)
 out = rag.answer("Fui demitido, como peço o seguro-desemprego?",

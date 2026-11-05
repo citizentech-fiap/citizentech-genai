@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "citizentech-genai"
+version = "1.0.0"
+description = "Assistente RAG CitizenTech: respostas sobre serviços públicos com base nas Cartas de Serviço do gov.br"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pyyaml",
+    "python-dotenv",
+    "numpy",
+    "rank-bm25",
+    "sentence-transformers",
+    "google-genai",
+    "pandas",
+]
+
+[project.optional-dependencies]
+chroma = ["chromadb"]   # backend vetorial alternativo (o padrão é o índice numpy)
+
+[tool.setuptools]
+packages = ["citizen_rag"]

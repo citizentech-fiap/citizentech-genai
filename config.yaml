@@ -3,7 +3,7 @@
 # via RAGAssistant(overrides={...}) — usado pelos scripts de avaliação para comparar configurações.
 
 paths:
-  corpus: ../RPA/output/corpus/servicos.jsonl     # gerado pelo robô (coletor gov.br)
+  corpus: data/corpus/servicos.jsonl     # snapshot do corpus coletado pelo robô (atualize com python -m citizen_rag.sync_corpus)
   corpus_fixture: tests/fixtures/corpus_fixture.jsonl   # usado se o corpus real não existir
   index_dir: indexes          # um subdiretório por (corpus, chunking, embedding) -> comparações não colidem
   llm_cache_dir: .cache/llm   # cache em disco das respostas do LLM (economiza cota do free tier)
