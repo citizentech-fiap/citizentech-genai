@@ -4,6 +4,15 @@ Assistente que responde a cidadãos sobre serviços públicos federais (requisit
 canais, prazos) com base nas Cartas de Serviço do gov.br coletadas pelo robô de RPA.
 O relatório completo (avaliação e justificativas) vem depois; este arquivo cobre só o uso.
 
+Global Solution 2026.2 · FIAP · Generative AI & Advanced Nets · Turma 2TIAPF
+
+## Integrantes
+| Nome completo | RM |
+|---|---|
+| Luís Fernando de Oliveira Salgado | RM561401 |
+| Ricardo de Paiva Melo | RM565522 |
+| Jonas Alaf | RM566479 |
+
 ## Parte da solução CitizenTech
 | Repositório | Disciplina | Papel |
 |---|---|---|
