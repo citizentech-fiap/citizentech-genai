@@ -10,3 +10,6 @@ __pycache__/
 .claude/
 .pytest_cache/
 *.pyc
+*.egg-info/
+build/
+dist/
