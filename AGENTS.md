@@ -16,7 +16,7 @@ Generative AI. Faz parte da solução CitizenTech com `citizentech-rpa` (`../RPA
 - O LLM é o Gemini (free tier). Todo script que dependa dele precisa funcionar também em modo `--llm stub`
   e sair com mensagem clara (sem stack trace) quando não houver chave ou rede.
   Respeite a cota: cache ligado e pausa configurável entre chamadas.
-- Nunca leia, grave ou exiba o conteúdo de arquivos `.env`; chaves ficam fora do código.
+- O agente nunca lê, grava ou exibe o conteúdo de `.env`. O **código da aplicação** carrega a chave do ambiente/`.env` normalmente (python-dotenv) — não desative isso; chaves ficam fora do código e do git.
 - Perguntas e "fatos esperados" das avaliações precisam ser conferidos no texto do corpus — nada inventado.
 
 ## Antes de terminar
