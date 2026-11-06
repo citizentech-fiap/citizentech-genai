@@ -12,7 +12,7 @@ ponta, segurança e interpretação): [`report/relatorio_avaliacao.md`](report/r
 |---|---|
 | Serviço certo nos 5 trechos recuperados | 95,3% |
 | Abstenção correta sem a informação no contexto (prompt v2) | 5 de 6 |
-| Respostas corretas nas perguntas respondíveis (revisão humana) | 68,2% — erros todos de geração |
+| Respostas corretas nas perguntas respondíveis (revisão independente por outro modelo) | 68,2% — erros todos de geração |
 | Vazamentos com as proteções ligadas | 0 em 12 cenários de ataque |
 
 Global Solution 2026.2 · FIAP · Generative AI & Advanced Nets · Turma 2TIAPF

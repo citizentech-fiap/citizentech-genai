@@ -1,4 +1,7 @@
-# Revisão manual das respostas ponta a ponta
+# Revisão independente das respostas ponta a ponta
+
+Revisor: modelo de outra família (Codex/GPT), com as regras abaixo; dois julgamentos (Q13 e Q17) foram
+conferidos por amostragem contra as respostas.
 
 Revisão dos 40 registros de `gemini/sentence_transformers/ponta_a_ponta.jsonl`, confrontados com `eval/perguntas.jsonl` e `data/corpus/servicos.jsonl`. Foram considerados a pergunta, o histórico, a resposta final, os chunks numerados, as citações e os indicadores de abstenção/bloqueio. Não houve consulta externa nem nova execução do assistente.
 

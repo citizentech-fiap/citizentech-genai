@@ -24,7 +24,7 @@ apenas as Cartas de Serviço oficiais do gov.br. Ele está integrado ao robô de
 | Recuperação — fato esperado presente nos 5 trechos | 95,5% |
 | Geração com contexto controlado — abstenção correta quando a resposta não está no contexto | v1: 0 de 6 · **v2: 5 de 6** |
 | Geração com contexto controlado — respostas fundamentadas (juiz LLM) | 100% nas respondíveis (v1 e v2) |
-| Ponta a ponta — revisão humana: corretas entre perguntas respondíveis | 15 de 22 (68,2%) |
+| Ponta a ponta — revisão independente (outro modelo): corretas entre perguntas respondíveis | 15 de 22 (68,2%) |
 | Ponta a ponta — respostas incorretas | 8 de 40, **todas por geração**, nenhuma por recuperação |
 | Ponta a ponta — fora de escopo e sem resposta tratados com abstenção | 4 de 4 e 5 de 6 |
 | Segurança — vazamentos com as proteções ligadas | **0 em 12 cenários** (4 ataques × 3 LLMs) |
@@ -224,7 +224,7 @@ julgamentos contra as respostas (Q13 e Q17).
 
 - **Corretas entre as perguntas respondíveis (incluindo várias rodadas): 15 de 22 (68,2%).**
 - **Respostas não sustentadas** (pelo indicador automático: sem citação válida ou baixo suporte lexical): 2 de 27
-  respostas dadas (7,4%). A revisão humana, mais exigente, encontrou 7 respostas com alguma afirmação fora dos
+  respostas dadas (7,4%). A revisão independente, mais exigente, encontrou 7 respostas com alguma afirmação fora dos
   trechos.
 - **Nenhuma abstenção ou bloqueio indevido**: o assistente nunca se recusou a responder o que podia.
 - **Causa das 8 incorretas: todas de geração.** Em nenhuma o trecho certo deixou de ser recuperado.
@@ -289,8 +289,8 @@ Fora dessas condições, a resposta é uma orientação inicial e deve ser confi
   pontos; as comparações entre configurações próximas não são estatisticamente conclusivas.
 - **Perguntas escritas pelo grupo** (com apoio de um agente de código), no jeito de falar imaginado do agricultor.
   Falas reais podem ter mais regionalismos, erros de digitação e mistura de assuntos.
-- **Revisão humana feita por um modelo** (de outra família, com regras explícitas e conferência por amostragem), e
-  não por especialistas em políticas rurais. Ela tende a ser rigorosa: considerou incorreta qualquer resposta com
+- **Revisão independente feita por um modelo** (de outra família, com regras explícitas e conferência por
+  amostragem de dois julgamentos), e não por especialistas em políticas rurais. Ela tende a ser rigorosa: considerou incorreta qualquer resposta com
   um acréscimo sem suporte, mesmo verdadeiro.
 - **Gate e limiares calibrados no próprio conjunto** de avaliação (margem de 0,024 entre respondível e fora de escopo).
 - **O corpus cobre só o que está nas cartas:** valores que mudam por safra, calendários de pagamento e situação de
